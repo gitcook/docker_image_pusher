@@ -105,33 +105,24 @@ jobs:
           if [[ $image =~ ^([^/]+)/([^/]+)/(.+)$ ]]; then
             # 格式: registry/namespace/image:tag
             namespace="${BASH_REMATCH[2]}"
-            if [[ ${BASH_REMATCH[3]} =~ : ]]; then
-              image_name="${BASH_REMATCH[3]%%:*}"
-              image_tag="${BASH_REMATCH[3]#*:}"
-            else
-              image_name="${BASH_REMATCH[3]}"
-              image_tag="latest"
-            fi
+            image_full="${BASH_REMATCH[3]}"
           elif [[ $image =~ ^([^/]+)/(.+)$ ]]; then
             # 格式: namespace/image:tag
             namespace="${BASH_REMATCH[1]}"
-            if [[ ${BASH_REMATCH[2]} =~ : ]]; then
-              image_name="${BASH_REMATCH[2]%%:*}"
-              image_tag="${BASH_REMATCH[2]#*:}"
-            else
-              image_name="${BASH_REMATCH[2]}"
-              image_tag="latest"
-            fi
+            image_full="${BASH_REMATCH[2]}"
           else
             # 格式: image:tag
             namespace="library"
-            if [[ $image =~ : ]]; then
-              image_name="${image%%:*}"
-              image_tag="${image#*:}"
-            else
-              image_name="$image"
-              image_tag="latest"
-            fi
+            image_full="$image"
+          fi
+          
+          # 处理镜像名和标签
+          if [[ $image_full =~ : ]]; then
+            image_name="${image_full%%:*}"
+            image_tag="${image_full#*:}"
+          else
+            image_name="$image_full"
+            image_tag="latest"
           fi
           
           # 构建新的镜像名
