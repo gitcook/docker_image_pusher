@@ -4,3 +4,10 @@
 xhofe/alist:latest
 #支持指定架构
 xiaoyaliu/alist
+xhofe/alist-aria2
+amilys/embyserver
+amilys/embyserver_arm64v8
+lovechen/embyserver
+emby/embyserver
+jxxghp/moviepilot
+jxxghp/moviepilot-v2
