@@ -22,3 +22,4 @@ linuxserver/qbittorrent
 linuxserver/transmission
 pixman/pixman
 nyanmisaka/jellyfin:latest-legacy
+ddsderek/wxchat
