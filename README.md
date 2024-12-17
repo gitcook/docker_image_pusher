@@ -65,9 +65,12 @@ alpine 即 阿里云中显示的镜像名<br>
 ![](doc/多架构.png)
 
 ### 镜像重名
+永远保留命名空间 ，这样方便用脚本来快速拉取，和tag
+
 * ddsderek/xiaoya-emd:latest -> registry.aliyuncs.com/your-namespace/ddsderek_xiaoya-emd:latest
 * nginx:1.25.3 -> registry.aliyuncs.com/your-namespace/library_nginx:1.25.3
 * bitnami/nginx:1.25.3 -> registry.aliyuncs.com/your-namespace/bitnami_nginx:1.25.3
+
 程序自动判断是否存在名称相同, 但是属于不同命名空间的情况。
 如果存在，会把命名空间作为前缀加在镜像名称前。
 例如:
@@ -75,6 +78,21 @@ alpine 即 阿里云中显示的镜像名<br>
 xhofe/alist
 xiaoyaliu/alist
 ```
+1. 对于 nginx:1.25.3：
+因为有多个命名空间的 nginx（library/nginx, kasmweb/nginx, bitnami/nginx）
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/library_nginx:1.25.3
+2. 对于 kasmweb/nginx:1.25.3：
+因为 nginx 镜像存在命名空间冲突
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/kasmweb_nginx:1.25.3
+3. 对于 bitnami/nginx:1.25.3：
+因为 nginx 镜像存在命名空间冲突
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/bitnami_nginx:1.25.3
+4. 对于 redis:7.2.4：
+因为 redis 镜像只有一个命名空间(library)
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/redis:7.2.4
+5. 对于 mcr.microsoft.com/dotnet/aspnet:7.0：
+因为 aspnet 镜像没有命名空间冲突
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/aspnet:7.0
 ![](doc/镜像重名.png)
 
 ### 定时执行
