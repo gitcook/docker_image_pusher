@@ -6,3 +6,4 @@ xhofe/alist:latest
 xiaoyaliu/alist
 xiaoyaliu/alist:hostmode
 xhofe/alist-aria2
+ddsderek/wxchat
