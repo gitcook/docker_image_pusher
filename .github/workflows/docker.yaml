@@ -67,6 +67,11 @@ jobs:
           image=$(echo "$line" | awk '{print $NF}')
           image="${image%%@*}"  # 移除 @sha256 部分
           
+          # 如果镜像没有标签，添加默认的 latest 标签
+          if [[ ! $image =~ : ]]; then
+              image="${image}:latest"
+          fi
+          
           # 解析镜像信息
           if [[ $image =~ ^([^/]+)/([^/]+)/(.+)$ ]]; then
             # 格式: registry/namespace/image:tag
