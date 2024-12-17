@@ -80,19 +80,19 @@ xiaoyaliu/alist
 ```
 1. 对于 nginx:1.25.3：
 因为有多个命名空间的 nginx（library/nginx, kasmweb/nginx, bitnami/nginx）
-推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/library_nginx:1.25.3
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/library_nginx:1.25.3<br>
 2. 对于 kasmweb/nginx:1.25.3：
 因为 nginx 镜像存在命名空间冲突
-推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/kasmweb_nginx:1.25.3
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/kasmweb_nginx:1.25.3<br>
 3. 对于 bitnami/nginx:1.25.3：
 因为 nginx 镜像存在命名空间冲突
-推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/bitnami_nginx:1.25.3
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/bitnami_nginx:1.25.3<br>
 4. 对于 redis:7.2.4：
 因为 redis 镜像只有一个命名空间(library)
-推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/redis:7.2.4
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/redis:7.2.4<br>
 5. 对于 mcr.microsoft.com/dotnet/aspnet:7.0：
 因为 aspnet 镜像没有命名空间冲突
-推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/aspnet:7.0
+推送到阿里云的镜像名会是：registry.aliyuncs.com/your-namespace/aspnet:7.0<br>
 ![](doc/镜像重名.png)
 
 ### 定时执行
