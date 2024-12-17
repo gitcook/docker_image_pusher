@@ -65,6 +65,9 @@ alpine 即 阿里云中显示的镜像名<br>
 ![](doc/多架构.png)
 
 ### 镜像重名
+ddsderek/xiaoya-emd:latest -> registry.aliyuncs.com/your-namespace/ddsderek_xiaoya-emd:latest
+nginx:1.25.3 -> registry.aliyuncs.com/your-namespace/library_nginx:1.25.3
+bitnami/nginx:1.25.3 -> registry.aliyuncs.com/your-namespace/bitnami_nginx:1.25.3
 程序自动判断是否存在名称相同, 但是属于不同命名空间的情况。
 如果存在，会把命名空间作为前缀加在镜像名称前。
 例如:
