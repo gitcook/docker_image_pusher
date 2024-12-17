@@ -53,11 +53,11 @@ jobs:
     - name: Build and push image Aliyun
       run: |
         # 登录阿里云容器镜像服务
-        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+        echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u "$ALIYUN_REGISTRY_USER" --password-stdin "$ALIYUN_REGISTRY"
         
         # 创建临时映射来存储命名空间和镜像名的关系
-        declare -A namespace_map
-        declare -A image_map
+        declare -A namespace_map=()
+        declare -A image_map=()
         
         # 第一次遍历：收集所有命名空间和镜像名信息
         while IFS= read -r line || [ -n "$line" ]; do
@@ -162,7 +162,7 @@ jobs:
           echo "标记镜像: $image -> $new_image"
           docker tag $image $new_image
           
-          echo "推送镜像: $new_image"
+          echo "��送镜像: $new_image"
           docker push $new_image
           
           # 清理镜像
