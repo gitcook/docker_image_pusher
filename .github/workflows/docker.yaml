@@ -113,12 +113,8 @@ jobs:
           image_tag="${image_full#*:}"
           
           # 构建新的镜像名
-          # 如果同一个镜像名存在多个命名空间，则在镜像名前加上命名空间
-          if [[ "${namespace_map[$image_name]}" =~ .*_.*_ ]]; then
-            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${namespace}_${image_name}:${image_tag}"
-          else
-            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${image_name}:${image_tag}"
-          fi
+          # 始终保留命名空间信息
+          new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${namespace}_${image_name}:${image_tag}"
           
           echo "标记镜像: $image -> $new_image"
           docker tag $image $new_image
