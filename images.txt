@@ -11,3 +11,8 @@ lovechen/embyserver
 emby/embyserver
 jxxghp/moviepilot
 jxxghp/moviepilot-v2
+haroldli/xiaoya-tvbox
+ddsderek/xiaoya-glue
+ddsderek/xiaoya-emd
+ddsderek/xiaoyakeeper
+ddsderek/xiaoya-115cleaner
