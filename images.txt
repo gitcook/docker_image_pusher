@@ -17,3 +17,4 @@ ddsderek/xiaoya-glue
 ddsderek/xiaoya-emd
 ddsderek/xiaoyakeeper
 ddsderek/xiaoya-115cleaner
+ddsderek/xiaoya-proxy
