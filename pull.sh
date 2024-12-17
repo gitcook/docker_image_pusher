@@ -19,7 +19,8 @@ ORIGINAL_IMAGE="$1"
 ARCH=$(uname -m)
 case $ARCH in
     x86_64)
-        platform_prefix="linux_amd64_"
+        platform_prefix=""
+#        platform_prefix="linux_amd64_"
         ;;
     aarch64)
         platform_prefix="linux_arm64_"
