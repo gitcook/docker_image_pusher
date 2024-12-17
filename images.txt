@@ -18,3 +18,7 @@ ddsderek/xiaoya-emd
 ddsderek/xiaoyakeeper
 ddsderek/xiaoya-115cleaner
 ddsderek/xiaoya-proxy
+linuxserver/qbittorrent
+linuxserver/transmission
+pixman/pixman
+nyanmisaka/jellyfin:latest-legacy
