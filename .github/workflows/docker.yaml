@@ -68,7 +68,7 @@ jobs:
           image="${image%%@*}"  # 移除 @sha256 部分
           
           # 如果镜像没有标签，添加默认的 latest 标签
-          if [[ ! $image =~ : ]]; then
+          if [[ ! $image =~ :.+ ]]; then
               image="${image}:latest"
           fi
           
@@ -77,14 +77,17 @@ jobs:
             # 格式: registry/namespace/image:tag
             namespace="${BASH_REMATCH[2]}"
             image_name="${BASH_REMATCH[3]%%:*}"
+            image_tag="${BASH_REMATCH[3]#*:}"
           elif [[ $image =~ ^([^/]+)/(.+)$ ]]; then
             # 格式: namespace/image:tag
             namespace="${BASH_REMATCH[1]}"
             image_name="${BASH_REMATCH[2]%%:*}"
+            image_tag="${BASH_REMATCH[2]#*:}"
           else
             # 格式: image:tag
             namespace="library"
             image_name="${image%%:*}"
+            image_tag="${image#*:}"
           fi
           
           # 记录命名空间和镜像名
@@ -106,18 +109,21 @@ jobs:
           
           # 解析镜像信息
           if [[ $image =~ ^([^/]+)/([^/]+)/(.+)$ ]]; then
+            # 格式: registry/namespace/image:tag
             namespace="${BASH_REMATCH[2]}"
-            image_full="${BASH_REMATCH[3]}"
+            image_name="${BASH_REMATCH[3]%%:*}"
+            image_tag="${BASH_REMATCH[3]#*:}"
           elif [[ $image =~ ^([^/]+)/(.+)$ ]]; then
+            # 格式: namespace/image:tag
             namespace="${BASH_REMATCH[1]}"
-            image_full="${BASH_REMATCH[2]}"
+            image_name="${BASH_REMATCH[2]%%:*}"
+            image_tag="${BASH_REMATCH[2]#*:}"
           else
+            # 格式: image:tag
             namespace="library"
-            image_full="$image"
+            image_name="${image%%:*}"
+            image_tag="${image#*:}"
           fi
-          
-          image_name="${image_full%%:*}"
-          image_tag="${image_full#*:}"
           
           # 构建新的镜像名
           # 始终保留命名空间信息
