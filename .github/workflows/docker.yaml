@@ -1,11 +1,9 @@
-name: Docker Image Sync
+name: Docker
 
 on:
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
   push:
-    branches: [ main ]  # 推送到main分支自动触发
-  schedule:
-    - cron: '00 10 * * *'  # 每天10点自动触发
+    branches: [ main ]
 
 env:
   ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
@@ -14,18 +12,17 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  docker-sync:
-    name: Sync Docker Images
+  build:
+    name: Pull
     runs-on: ubuntu-latest
-
     steps:
-    # 1. 检查磁盘空间
     - name: Before freeing up disk space
       run: |
         echo "Before freeing up disk space"
+        echo "=============================================================================="
         df -hT
+        echo "=============================================================================="
 
-    # 2. 最大化磁盘空间
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
@@ -35,58 +32,103 @@ jobs:
         remove-haskell: 'true'
         build-mount-path: '/var/lib/docker/'
 
-    - name: Restart Docker
+    - name: Restart docker
       run: sudo service docker restart
 
-    # 3. 再次检查磁盘空间
-    - name: After freeing up disk space
-      run: df -hT
+    - name: Free up disk space complete
+      run: |
+        echo "Free up disk space complete"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
 
-    # 4. 拉取代码
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 5. Docker Buildx 设置
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v3
 
-    # 6. 镜像同步任务
-    - name: Pull, Tag, and Push Docker Images
+    - name: Build and push image Aliyun
       run: |
-        # 登录 Aliyun 镜像仓库
-        echo "${ALIYUN_REGISTRY_PASSWORD}" | docker login -u "${ALIYUN_REGISTRY_USER}" --password-stdin "${ALIYUN_REGISTRY}"
+        # 登录阿里云容器镜像服务
+        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         
-        # 读取 images.txt 文件并处理
-        while IFS= read -r image_entry || [ -n "$image_entry" ]; do
-            # 忽略空行和注释
-            [[ -z "$image_entry" || "$image_entry" =~ ^\s*# ]] && continue
-
-            # 获取镜像完整名称（去掉 @sha256 等后缀）
-            full_image_name=$(echo "$image_entry" | awk '{print $NF}')
-            full_image_name="${full_image_name%%@*}"
-            
-            # 解析镜像的命名空间和镜像名:版本号
-            image_with_tag=$(echo "$full_image_name" | awk -F'/' '{print $NF}')  # 镜像名:版本号
-            namespace=$(echo "$full_image_name" | awk -F'/' '{if (NF==3) print $2; else if (NF==2) print $1; else print "library"}')  # 默认namespace
-            image_name=$(echo "$image_with_tag" | awk -F':' '{print $1}')  # 镜像名
-            image_tag=$(echo "$image_with_tag" | awk -F':' '{print $2}')  # 版本号
-
-            # 目标镜像名称：<ALIYUN_REGISTRY>/<ALIYUN_NAME_SPACE>/<namespace>_<image_name>:<tag>
-            combined_name="${namespace}_${image_name}"
-            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$combined_name:$image_tag"
-
-            # 拉取、重命名、推送镜像
-            echo "Pulling image: $full_image_name"
-            docker pull "$full_image_name"
-
-            echo "Tagging image: $new_image"
-            docker tag "$full_image_name" "$new_image"
-
-            echo "Pushing image: $new_image"
-            docker push "$new_image"
-
-            # 清理本地镜像以节省空间
-            echo "Cleaning up local images"
-            docker rmi "$full_image_name" "$new_image" || true
-
+        # 创建临时映射来存储命名空间和镜像名的关系
+        declare -A namespace_map
+        declare -A image_map
+        
+        # 第一次遍历：收集所有命名空间和镜像名信息
+        while IFS= read -r line || [ -n "$line" ]; do
+          [[ -z "$line" ]] && continue
+          [[ $line =~ ^\s*# ]] && continue
+          
+          image=$(echo "$line" | awk '{print $NF}')
+          image="${image%%@*}"  # 移除 @sha256 部分
+          
+          # 解析镜像信息
+          if [[ $image =~ ^([^/]+)/([^/]+)/(.+)$ ]]; then
+            # 格式: registry/namespace/image:tag
+            namespace="${BASH_REMATCH[2]}"
+            image_name="${BASH_REMATCH[3]%%:*}"
+          elif [[ $image =~ ^([^/]+)/(.+)$ ]]; then
+            # 格式: namespace/image:tag
+            namespace="${BASH_REMATCH[1]}"
+            image_name="${BASH_REMATCH[2]%%:*}"
+          else
+            # 格式: image:tag
+            namespace="library"
+            image_name="${image%%:*}"
+          fi
+          
+          # 记录命名空间和镜像名
+          namespace_map[$image_name]="${namespace_map[$image_name]}${namespace}_"
         done < images.txt
+        
+        # 第二次遍历：处理和推送镜像
+        while IFS= read -r line || [ -n "$line" ]; do
+          [[ -z "$line" ]] && continue
+          [[ $line =~ ^\s*# ]] && continue
+          
+          echo "处理镜像: $line"
+          
+          # 拉取原始镜像
+          docker pull $line
+          
+          image=$(echo "$line" | awk '{print $NF}')
+          image="${image%%@*}"
+          
+          # 解析镜像信息
+          if [[ $image =~ ^([^/]+)/([^/]+)/(.+)$ ]]; then
+            namespace="${BASH_REMATCH[2]}"
+            image_full="${BASH_REMATCH[3]}"
+          elif [[ $image =~ ^([^/]+)/(.+)$ ]]; then
+            namespace="${BASH_REMATCH[1]}"
+            image_full="${BASH_REMATCH[2]}"
+          else
+            namespace="library"
+            image_full="$image"
+          fi
+          
+          image_name="${image_full%%:*}"
+          image_tag="${image_full#*:}"
+          
+          # 构建新的镜像名
+          # 如果同一个镜像名存在多个命名空间，则在镜像名前加上命名空间
+          if [[ "${namespace_map[$image_name]}" =~ .*_.*_ ]]; then
+            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${namespace}_${image_name}:${image_tag}"
+          else
+            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${image_name}:${image_tag}"
+          fi
+          
+          echo "标记镜像: $image -> $new_image"
+          docker tag $image $new_image
+          
+          echo "推送镜像: $new_image"
+          docker push $new_image
+          
+          # 清理镜像
+          docker rmi $image $new_image
+          
+          echo "完成处理: $line"
+          echo "============================================="
+        done < images.txt 
