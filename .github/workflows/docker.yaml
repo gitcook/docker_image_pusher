@@ -7,7 +7,7 @@ on:
     paths:
       - 'images.txt'  # 只有当 images.txt 变化时才触发
   schedule:
-    - cron: '00 10 * * 1'  # 每天10点自动触发
+    - cron: '00 10 */2 * *'  # 每天10点自动触发
 
 env:
   ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
