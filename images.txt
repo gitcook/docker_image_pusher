@@ -9,8 +9,10 @@ xiaoyaliu/alist:hostmode
 
 #xhofe/alist-aria2
 
-haroldli/xiaoya-tvbox
-ddsderek/xiaoya-glue
-ddsderek/xiaoya-emd
-ddsderek/xiaoyakeeper
-ddsderek/xiaoya-115cleaner
+#haroldli/xiaoya-tvbox
+#ddsderek/xiaoya-glue
+#ddsderek/xiaoya-emd
+#ddsderek/xiaoyakeeper
+#ddsderek/xiaoya-115cleaner
+
+gdy666/lucky
