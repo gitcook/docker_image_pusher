@@ -15,4 +15,5 @@ xiaoyaliu/alist:hostmode
 #ddsderek/xiaoyakeeper
 #ddsderek/xiaoya-115cleaner
 
+jxxghp/moviepilot-v2
 gdy666/lucky
