@@ -17,3 +17,5 @@ xiaoyaliu/alist:hostmode
 
 jxxghp/moviepilot-v2
 gdy666/lucky
+
+btpanel/baota:latest
