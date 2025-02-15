@@ -19,3 +19,4 @@ xiaoyaliu/alist
 #gdy666/lucky
 
 #btpanel/baota:latest
+iyuucn/iyuuplus
