@@ -19,4 +19,6 @@ xiaoyaliu/alist
 #gdy666/lucky
 
 #btpanel/baota:latest
-iyuucn/iyuuplus
+#iyuucn/iyuuplus
+linuxserver/qbittorrent:4.6.5
+linuxserver/transmission:latest
