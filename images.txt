@@ -21,4 +21,5 @@ xiaoyaliu/alist
 #btpanel/baota:latest
 #iyuucn/iyuuplus
 #linuxserver/qbittorrent:4.6.5
-linuxserver/transmission:4.0.5
+#linuxserver/transmission:4.0.5
+xylplm/media-saber:latest-beta
