@@ -25,4 +25,5 @@ xiaoyaliu/alist
 #xylplm/media-saber:latest-beta
 #diluka/nas-tools:2.9.1
 #amilys/embyserver:latest
-imaliang/cloud-media-sync:latest
+#imaliang/cloud-media-sync:latest
+nastools/nas-tools:2.9.1
