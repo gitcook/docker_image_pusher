@@ -16,7 +16,7 @@ xiaoyaliu/alist
 #ddsderek/xiaoya-115cleaner
 
 #jxxghp/moviepilot-v2
-#gdy666/lucky
+gdy666/lucky
 
 #btpanel/baota:latest
 #iyuucn/iyuuplus
@@ -26,4 +26,5 @@ xiaoyaliu/alist
 #diluka/nas-tools:2.9.1
 #amilys/embyserver:latest
 #imaliang/cloud-media-sync:latest
-nastools/nas-tools:2.9.1
+#nastools/nas-tools:2.9.1
+jc21/nginx-proxy-manager:latest
