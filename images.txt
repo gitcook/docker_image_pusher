@@ -15,7 +15,7 @@ xiaoyaliu/alist
 #ddsderek/xiaoyakeeper
 #ddsderek/xiaoya-115cleaner
 
-#jxxghp/moviepilot-v2
+jxxghp/moviepilot-v2
 gdy666/lucky
 
 #btpanel/baota:latest
@@ -28,5 +28,5 @@ gdy666/lucky
 #imaliang/cloud-media-sync:latest
 #nastools/nas-tools:2.9.1
 #jc21/nginx-proxy-manager:latest
-hsuyelin/nas-tools:latest
-hsuyelin/nas-tools:2.9.1
+#hsuyelin/nas-tools:latest
+#hsuyelin/nas-tools:2.9.1
