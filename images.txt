@@ -25,6 +25,7 @@ gdy666/lucky
 #xylplm/media-saber:latest-beta
 #diluka/nas-tools:2.9.1
 #amilys/embyserver:latest
+emby/embyserver:latest
 #imaliang/cloud-media-sync:latest
 #nastools/nas-tools:2.9.1
 #jc21/nginx-proxy-manager:latest
