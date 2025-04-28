@@ -21,6 +21,7 @@ gdy666/lucky
 #btpanel/baota:latest
 #iyuucn/iyuuplus
 #linuxserver/qbittorrent:4.6.5
+linuxserver/qbittorrent:latest
 #linuxserver/transmission:4.0.5
 #xylplm/media-saber:latest-beta
 #diluka/nas-tools:2.9.1
