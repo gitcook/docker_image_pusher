@@ -9,7 +9,7 @@ xiaoyaliu/alist
 
 #xhofe/alist-aria2
 
-#haroldli/xiaoya-tvbox
+haroldli/xiaoya-tvbox
 #ddsderek/xiaoya-glue
 #ddsderek/xiaoya-emd
 #ddsderek/xiaoyakeeper
